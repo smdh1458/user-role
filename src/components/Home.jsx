@@ -1,6 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import CompanyComponent from "../pages/CompanyComponent";
+import UserComponent from "../pages/UserComponent";
+import AdminComponent from "../pages/AdminComponent";
 
 
 const Home = () => {
@@ -31,13 +33,16 @@ const Home = () => {
             return <div>사용자 정보가 없습니다.</div>;
         }
 
-        console.log("user Role",user.userRole);
+        console.log("user Role:",user.userRole);
         switch (user.userRole) {
-            case 2:
+            case "1":
+                return <AdminComponent />
+            case "2":
                 return <CompanyComponent />;
+            case "3" :
+                return <UserComponent />
             default:
-
-                return <div>접근 권한이 없습니다.</div>
+                return <div>접근 권한이 없습니다.</div>;
         }
     }
 
@@ -48,7 +53,7 @@ const Home = () => {
             {user ?
                 <div>
                     <p>환영합니다. {user.userName}님!</p>
-                    <button>로그아웃</button>
+                    <button onClick={() => navigate("/login")}>로그아웃</button>
 
                     {/* 역할에 따라 다른 컴포넌트 렌더링 */}
                     {roleUser()}

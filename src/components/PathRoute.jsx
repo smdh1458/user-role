@@ -23,12 +23,20 @@ function PathRoute() {
                <Route path="/" element={<Home />} />
                <Route path="/login" element={<Login setUser={setUser} />} />
                {/* 1. 관리자만 접근 가능 Components */}
+               <Route path="/admin" element={<ProtectedRoute allowedRoles={ [1] }>
+                   <CompanyPage user={user}/>
+               </ProtectedRoute> }
+               />
                {/* 2.   회사만 접근 가능 Components */}
                <Route path="/company" element={<ProtectedRoute allowedRoles={ [2] }>
                                                     <CompanyPage user={user}/>
                                                 </ProtectedRoute> }
                />
                {/* 3.   유저만 접근 가능 Components */}
+               <Route path="/user" element={<ProtectedRoute allowedRoles={ [3] }>
+                   <CompanyPage user={user}/>
+               </ProtectedRoute> }
+               />
 
            </Routes>
        </BrowserRouter>

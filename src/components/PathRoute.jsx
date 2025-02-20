@@ -1,5 +1,3 @@
-
-
 //const PathRoute = () => {
 // Header 와 Footer 사용
 // 로그인 정보에 따라 보여줄 페이지 설정
@@ -11,6 +9,8 @@ import Home from "./Home";
 import Login from "./Login";
 import CompanyPage from "../pages/CompanyPage";
 import ProtectedRoute from "./ProtectedRoute";
+import UserPage from "../pages/UserPage";
+import AdminPage from "../pages/AdminPage";
 
 function PathRoute() {
     const [user, setUser] = useState(null);
@@ -22,19 +22,22 @@ function PathRoute() {
                {/* 0. 관리자, 회사, 유저에 관계없이 전체 접근 가능 Components */}
                <Route path="/" element={<Home />} />
                <Route path="/login" element={<Login setUser={setUser} />} />
+
                {/* 1. 관리자만 접근 가능 Components */}
                <Route path="/admin" element={<ProtectedRoute allowedRoles={ [1] }>
-                   <CompanyPage user={user}/>
+                   <AdminPage user={user}/>
                </ProtectedRoute> }
                />
+
                {/* 2.   회사만 접근 가능 Components */}
                <Route path="/company" element={<ProtectedRoute allowedRoles={ [2] }>
                                                     <CompanyPage user={user}/>
                                                 </ProtectedRoute> }
                />
+
                {/* 3.   유저만 접근 가능 Components */}
                <Route path="/user" element={<ProtectedRoute allowedRoles={ [3] }>
-                   <CompanyPage user={user}/>
+                   <UserPage user={user}/>
                </ProtectedRoute> }
                />
 

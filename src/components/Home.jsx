@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import CompanyComponent from "../pages/CompanyComponent";
 import UserComponent from "../pages/UserComponent";
 import AdminComponent from "../pages/AdminComponent";
+import axios from "axios";
+import UserSearch from "../pages/admin/UserSearch";
 
 
 const Home = () => {
@@ -22,10 +24,44 @@ const Home = () => {
     // 다른 형태로 존재하는 데이터를 JSON 형식으로 parse 변환하여 유저정보를 확인하겠다.
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
+        console.log("storedUser: "+storedUser);
         if (storedUser){
             setUser(JSON.parse(storedUser));
         }
     }, []);
+
+    const handleLogout = () => {
+        axios
+            .post("http://localhost:8080/api/user/logout")
+            .then(
+                (response) => {
+                    // 1 번 로그아웃 성공했을 경우
+                    if (response.data.status === "logout"){
+                        localStorage.removeItem("user");
+                        sessionStorage.removeItem("user");
+                        setUser(null)
+                        alert("로그아웃 되었습니다.");
+                        navigate("/");
+                    }
+                    else {
+                        alert("현재 진행중인 작업을 종료하고 로그아웃 실행해주세요");
+                    }
+                }
+            )
+            .catch(
+                (err) => {
+                    console.log("loggout error: "+ err);
+                    alert("백엔드에서 로그아웃을 처리하는데 문제가 발생했습니다.");
+                }
+            )
+    }
+
+    /*
+    const logout = () => {
+        localStorage.removeItem("user");
+
+        navigate("/login");
+    }*/
 
     //역할 (role) 에 따른 컴포넌트 선택
     const roleUser = () => {
@@ -33,14 +69,16 @@ const Home = () => {
             return <div>사용자 정보가 없습니다.</div>;
         }
 
+        /*컨트롤러에서 데이터를 보낼땐 문자열로 보냄*/
         console.log("user Role:",user.userRole);
         switch (user.userRole) {
+            // 내일 -> 문자열로 전달받는 값을 형변환해서 switch 문에 문자나 숫자값으로 전달
             case "1":
-                return <AdminComponent />
+                return <AdminComponent />;
             case "2":
                 return <CompanyComponent />;
             case "3" :
-                return <UserComponent />
+                return <UserComponent />;
             default:
                 return <div>접근 권한이 없습니다.</div>;
         }
@@ -53,7 +91,7 @@ const Home = () => {
             {user ?
                 <div>
                     <p>환영합니다. {user.userName}님!</p>
-                    <button onClick={() => navigate("/login")}>로그아웃</button>
+                    <button onClick={handleLogout}>로그아웃</button>
 
                     {/* 역할에 따라 다른 컴포넌트 렌더링 */}
                     {roleUser()}

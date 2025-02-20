@@ -27,6 +27,7 @@ const Login = ({setUser}) => {
                         alert("로그인 성공!");
 
                         navigate(response.data.redirect);
+
                     } else {                                // 클라이언트가 작성한 아이디 비밀번호가 불일치
                         alert("로그인 실패 아이디와 비밀번호가 일치하지 않습니다.");
                     }

@@ -1,3 +1,4 @@
+
 //const PathRoute = () => {
 // Header 와 Footer 사용
 // 로그인 정보에 따라 보여줄 페이지 설정
@@ -7,44 +8,69 @@ import {useState} from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
-import CompanyPage from "../pages/CompanyPage";
 import ProtectedRoute from "./ProtectedRoute";
-import UserPage from "../pages/UserPage";
+import CompanyPage from "../pages/CompanyPage";
 import AdminPage from "../pages/AdminPage";
+import UserPage from "../pages/UserPage";
+import PostList from "../pages/posts/PostList";
+import SearchPosts from "../pages/posts/SearchPosts";
+import InsertPost from "../pages/posts/InsertPost";
+import PostDetail from "../pages/posts/PostDetail";
+import UpdatePost from "../pages/posts/UpdatePost";
+import Main from "../pages/boot-page/Main";
 
-function PathRoute() {
-    const [user, setUser] = useState(null);
+function PathRoute () {
+    const[user, setUser] = useState(null);
 
     return(
-       <BrowserRouter>
-           {/* 경로와 관계 없는 jsx 파일은 Routes 외부에 작성*/}
-           <Routes>
-               {/* 0. 관리자, 회사, 유저에 관계없이 전체 접근 가능 Components */}
-               <Route path="/" element={<Home />} />
-               <Route path="/login" element={<Login setUser={setUser} />} />
+        <BrowserRouter >
+            {/*
+            경로와 관계 없는 jsx 파일은
+            Routes 외부에 작성
+            */}
 
-               {/* 1. 관리자만 접근 가능 Components */}
-               <Route path="/admin" element={<ProtectedRoute allowedRoles={ [1] }>
-                   <AdminPage user={user}/>
-               </ProtectedRoute> }
-               />
+            <Routes>
+                {/* 0. 관리자, 회사, 유저에 관계 없이 전체 접근 가능 Components */}
+                <Route path="/home" element={<Home/>     } />
+                <Route path="/" element={<Main/>     } />
 
-               {/* 2.   회사만 접근 가능 Components */}
-               <Route path="/company" element={<ProtectedRoute allowedRoles={ [2] }>
-                                                    <CompanyPage user={user}/>
-                                                </ProtectedRoute> }
-               />
+                <Route path="/posts" element={<PostList />} />
+                <Route path="/posts/:postId" element={<PostDetail />} />
+                <Route path="/posts/search" element={<SearchPosts />} />
+                <Route path="/posts/create" element={<InsertPost />} />
 
-               {/* 3.   유저만 접근 가능 Components */}
-               <Route path="/user" element={<ProtectedRoute allowedRoles={ [3] }>
-                   <UserPage user={user}/>
-               </ProtectedRoute> }
-               />
+                {/* PostDetail 에서 수정 버튼 내부 to 속성에 작성한 경로값 설정*/}
+                <Route path="/posts/edit/:postId" element={<UpdatePost />} />
 
-           </Routes>
-       </BrowserRouter>
+
+
+                <Route path="/login" element={<Login setUser={setUser}  />} />
+                {/* 1. 관리자만 접근 가능 Components */}
+                <Route path="/company" element={   <ProtectedRoute allowedRoles={ [1] }>
+                    <AdminPage user={user} />
+                </ProtectedRoute>                       }
+                />
+
+                {/* 2.   회사만 접근 가능 Components */}
+                <Route path="/company" element={   <ProtectedRoute allowedRoles={ [2] }>
+                    <CompanyPage user={user} />
+                </ProtectedRoute>                       }
+                />
+                {/* 3.   유저만 접근 가능 Components */}
+                <Route path="/company" element={   <ProtectedRoute allowedRoles={ [3] }>
+                    <UserPage user={user} />
+                </ProtectedRoute>                       }
+                />
+
+            </Routes>
+
+
+
+
+        </BrowserRouter>
     )
+
 
 }
 
-export default PathRoute;
+export  default PathRoute;

@@ -59,4 +59,10 @@ const Login = ({setUser}) => {
     )
 }
 
+{/*
+('admin1', 'password123', '홍길동', 'hong@kht.com', 1), -- 관리자
+('company2', 'securePass!', '김철수', 'kim@company.com', 2), -- 업체
+('user3', 'myPass2024', '이영희', 'lee@user.com', 3); -- 사용자
+*/}
+
 export default Login;

@@ -3,6 +3,7 @@
 import React, {useState} from "react";
 import axios from "axios";
 import './ProductSearch.css';
+import apiProductService from "./apiProductService";
 
 const ProductSearch = () => {
     // 검색 변수 이름
@@ -23,35 +24,7 @@ const ProductSearch = () => {
 
         // value 값이 존재한다면 추천 검색어 제공
         if (value) {
-            axios
-                .get(`http://localhost:8080/api/products/search?keyword=${value}`)
-                .then(
-                    (res) => {
-                        // res.data 는 배열 형식으로 데이터를 가져올 수 없기 때문에 사용 불가
-                        /*
-                        const 제안리스트 = Array.isArray(res.data)
-                            ?
-                            res.data.map(
-                                (p) => (
-                                    p.productName
-                                )
-                            )
-                            :
-                            [];
-
-                         */
-                        const 제안리스트 = res.data?.map(p => p.productName) || [];
-                        setSugs(제안리스트); // 백엔드에서 가져온 제안리스트에서 이름만 sugs 변수이름으로 전달
-                        setShow(true); //제안 리스트를 sugs 변수이름으로 전달했고, 전달한 값이 존재하면 추천 검색어 보여주기 설정
-                    }
-                )
-                .catch(
-                    (err) => {
-                        console.error("추천 검색어 동작 실행 실패 : ", err);
-                        setSugs([]); // 새로운 input 값이 들어왔을 때 문제가 발생하면 기존에 추천한 리스트를 모두 비우기
-                    }
-                )
-
+            apiProductService.getSuggestions(value, setSugs, setShow);
         } else { //추천할 검색어가 없다면 한마디로 input 이 비어있다면!!
             setSugs([]); //추천 검색어 리스트 비우기
             setShow(false);
@@ -72,20 +45,7 @@ const ProductSearch = () => {
             alert("검색어를 입력하세요.");
             return;
         }
-
-        axios
-            .get(`http://localhost:8080/api/products/search?keyword=${keyword}`)
-            .then(
-                (res) => {
-                    setProducts(res.data)
-                }
-            )
-            .catch(
-                (err) => {
-                    console.log("검색 실패 : ", err)
-                    setProducts([]); // 기존에 검색된 데이터가 있다면 지워버리기
-                }
-            )
+        apiProductService.getSearchProducts(keyword, setProducts)
     }
 
 

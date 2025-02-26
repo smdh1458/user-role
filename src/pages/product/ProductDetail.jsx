@@ -1,7 +1,85 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
+import apiProductService from "./apiProductService";
+import {useParams} from "react-router-dom";
 
 const ProductDetail = () => {
+    //제품 아이디 변수 이름
+    const {productId} = useParams();
+    //const [productId, setProductId] = useState("");
+    //제품 정보 변수 이름
+    const [product, setProduct] = useState(null);
+    const [quantity, setQuantity] = useState(1); // 주문 수량 상태 관리
+
+    useEffect(() => {
+        apiProductService.getProductById(productId, setProduct);
+    }, [productId]);
+    return (
+        <section className="py-5">
+
+            <div className="container px-4 px-lg-5 my-5">
+
+                <div className="row gx-4 gx-lg-5 align-items-center">
+
+                    <div className="col-md-6"><img className="card-img-top mb-5 mb-md-0"
+                                                   src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..."/>
+                    </div>
+
+                    <div className="col-md-6">
+
+                        <div className="small mb-1">{product?.productCategory}</div>
+
+                        <h1 className="display-5 fw-bolder">{product?.productName}</h1>
+
+                        <div className="fs-5 mb-5">
+
+                            <span className="text-decoration-line-through">{(product?.productPrice * 1.3).toFixed(0)}원</span>
+
+                            <span>{product?.productPrice}원</span>
+
+                        </div>
+
+                        <p className="lead">{product?.productDescription}</p>
+
+                        <div className="fs-5 mb-5">
+                            <span>{product?.productStock}개</span>
+
+                        </div>
+
+                        <div className="d-flex">
+
+                            {/*
+                            style="max-width: 3rem" 이게 아닌
+                            style={{maxWidth: "3rem"}} 이런식으로 써야함
+                            */}
+                            <input className="form-control text-center me-3"
+                                   id="inputQuantity"
+                                   type="num"
+                                   value={quantity}
+                                   onChange={(e) => setQuantity(e.target.value)}
+                                   style={{maxWidth: "3rem"}}/>
+
+                            <button className="btn btn-outline-dark flex-shrink-0" type="button">
+
+                                <i className="bi-cart-fill me-1"></i>
+
+                                Add to cart
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+    )
+};
+
+const ProductDetails = () => {
     //제품 아이디 변수 이름
     const [productId, setProductId] = useState("");
     //제품 정보 변수 이름
@@ -10,24 +88,12 @@ const ProductDetail = () => {
     const getProductDetail = () => {
         // input 비어있는지 확인 후 비어있다면
         // "상품 ID를 입력하세요." 보여준 후 리턴
-        if(!productId.trim()) { // trim() 왼쪽 오른쪽 공백 제거
+        if (!productId.trim()) { // trim() 왼쪽 오른쪽 공백 제거
             alert("상품 ID를 입력하세요.");
             return;
         }
         // 조회 클릭시 api endpoint 로 접근해서 제품 id 에 해당하는 데이터 호출
-        axios
-            .get(`http://localhost:8080/api/products/${productId}`)
-            .then(
-                (res) => {
-                    setProduct(res.data);  // res 는 변수이름을 ABC 나 XYZ 사용 가능하지만 .data 메서드나 변수명으로 활동하는 기능이기 때문에 이름 변경 불가
-                }
-            )
-            .catch(
-                (err) => {
-                    console.error("백엔드 연결 실패 : ",err)
-                    alert("백엔드에서 데이터 조회를 실패했습니다.");
-                }
-            )
+        apiProductService.getProductById(productId, setProduct);
     }
 
     return (

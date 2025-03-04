@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import apiClothesService from "./apiClothesService";
 import {Link, useNavigate, useParams} from "react-router-dom";
+import ClothesCard from "./ClothesCard";
 
 const ClothesDetail = () => {
     const {id} = useParams();
     const [cloth, setCloth] = useState("");
-    const navigate =useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         apiClothesService.getClothesById(id, setCloth)
@@ -16,7 +17,7 @@ const ClothesDetail = () => {
         navigate(-1);
     }
 
-    return(
+    return (
         <div>
             <h1>{cloth?.cname}</h1>
             <p>카테고리: {cloth?.ccategory}</p>

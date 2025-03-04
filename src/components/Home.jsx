@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import CompanyComponent from "../pages/CompanyComponent";
-import AdminComponent from "../pages/AdminComponent";
-import UserComponent from "../pages/UserComponent";
+import CompanyComponent from "../pages/role/CompanyComponent";
+import AdminComponent from "../pages/role/AdminComponent";
+import UserComponent from "../pages/role/UserComponent";
 
 import StoreComponent from "../pages/main/StoreComponent";
 import SearchComponent from "../pages/main/SearchComponent";

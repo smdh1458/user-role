@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import apiClothesService from "./apiClothesService";
 import {Link} from "react-router-dom";
+import ClothesCard from "./ClothesCard";
 
 
 const ClothesList = () => {
@@ -10,25 +11,27 @@ const ClothesList = () => {
         apiClothesService.getAllClothes(setCloths)
     }, []);
 
+    const handleDelete = (cid) => {
+        apiClothesService.deleteClothes(cid);
+    }
+
     return (
-        <div className="ClothList-container">
-            {
-                cloths.map(
-                    (cloths) => (
-                    <ul>
-                        <li>
-                            <div key={cloths.cid}>
-                                <h1>{cloths.cname}</h1>
-                                <p>{cloths.cprice}원</p>
-                                <p>색상: {cloths.ccolor}</p>
-                                <p>카테고리: {cloths.ccategory}</p>
-                                <Link to={`/clothes/${cloths.cid}`}>상세보기</Link>
-                            </div>
-                        </li>
-                    </ul>
-                ))
-            }
-            <Link to={"/clothes/add"}>추가하기</Link>
+        <div className="py-5">
+            <div className="container px-4 px-lg-5 mt-5">
+                <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {cloths.map((clothe) => (
+                        <ClothesCard
+                            key={clothe.id}
+                            id={clothe.cid}
+                            name={clothe.cname}
+                            price={clothe.cprice}
+                            image="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                            onDelete={handleDelete}// 삭제 기능 함수를 onDelete 라는 명칭으로 ClothesCard에 전달
+                        />
+                    ))}
+                </div>
+            </div>
+            <Link to={`/clothes/add`}>추가하기</Link>
         </div>
     )
 }

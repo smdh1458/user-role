@@ -56,10 +56,12 @@ const NavBar = ({user}) => {
                             </a>
                             <ul className="dropdown-menu">
                                 <li><Link className="nav-link" to="/clothes">의류 목록</Link></li>
+                                <li><Link className="nav-link" to="/clothes/add">의류 추가</Link></li>
                                 <li>
                                     <hr className="dropdown-divider"/>
                                 </li>
                                 <li><Link className="nav-link" to="/">의류 검색</Link></li>
+
                             </ul>
                         </li>
 

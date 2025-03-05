@@ -31,7 +31,6 @@ const ClothesList = () => {
                     ))}
                 </div>
             </div>
-            <Link to={`/clothes/add`}>추가하기</Link>
         </div>
     )
 }

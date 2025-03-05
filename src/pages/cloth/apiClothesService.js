@@ -1,6 +1,6 @@
 import axios, {put} from "axios";
 
-
+// 상수 = 변경되지 않고 값이 일정한 수 = 대문자로 표기
 const CLOTH_API_URL = "http://localhost:8080/api/clothes";
 
 /*
@@ -64,8 +64,8 @@ const apiClothesService = {
                     headers: {"Content-Type": "application/json"}
                 })
                 .then(
-                    () => {
-                        alert("추가 완료");
+                    (res) => {
+                        alert("의류 등록이 완료되었습니다.");
                     }
                 )
                 .catch(
@@ -105,6 +105,7 @@ const apiClothesService = {
                 .catch(
                     (err) => {
                         alert("백엔드에서 컨트롤러 연결에 실패했습니다.");
+                        console.err("err: "+err);
                     }
                 )
         }

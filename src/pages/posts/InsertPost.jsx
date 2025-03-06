@@ -61,7 +61,7 @@ const InsertPost = () => {
     const handleSubmit = (e) => {
         e.preventDefault(); // 기본 폼 제출 동작 방지
 
-        console.log("폼 데이터 제출 전: ", formData);
+        console.log("폼 데이터 제출 전: ", JSON.stringify(formData, null, 2));
 
         axios
             .post("http://localhost:8080/api/posts", formData,
@@ -115,10 +115,11 @@ const InsertPost = () => {
             {message && <p>{message}</p>} */}
             <form onSubmit={handleSubmit}>
                 {inputPostField.map(
-                    (f) => (
-                        <FormPostData key={f.id} {...f}
-                                      value={formData.data}
-                                      onChage={handleChange}
+                    (field) => (
+                        <FormPostData  key={field.id}
+                                       {...field}  // field의 id, label, placeholder를 전달
+                                       value={formData[field.id]} // formData에서 해당 id의 값을 전달
+                                       handleChange={handleChange} // handleChange를 전달하여 input의 값을 변경
                         />
                     )
                 )}
@@ -133,4 +134,3 @@ const InsertPost = () => {
 }
 
 export default InsertPost;
-// 미해결

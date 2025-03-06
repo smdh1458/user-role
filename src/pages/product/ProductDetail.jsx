@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import apiProductService from "./apiProductService";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const ProductDetail = () => {
     //제품 아이디 변수 이름
@@ -10,10 +10,20 @@ const ProductDetail = () => {
     //제품 정보 변수 이름
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1); // 주문 수량 상태 관리
+    const navigate = useNavigate();
 
+    // useEffect 자동으로 데이터 불러오기
     useEffect(() => {
         apiProductService.getProductById(productId, setProduct);
     }, [productId]);
+
+    const handleEdit = () => {
+        navigate(`/products/edit/${productId}`);
+    }
+
+    const handleDelete = () => {
+       apiProductService.deleteProduct(productId, navigate);
+    }
     return (
         <section className="py-5">
 
@@ -64,6 +74,30 @@ const ProductDetail = () => {
                                 <i className="bi-cart-fill me-1"></i>
 
                                 Add to cart
+
+                            </button>
+
+                        </div>
+
+                        <div className="d-flex">
+                            <button className="btn btn-outline-warning flex-shrink-0"
+                                    type="button"
+                                    onClick={handleDelete}
+                            >
+
+                                <i className="bi-cart-fill me-1"></i>
+
+                                삭제
+
+                            </button>
+                            <button className="btn btn-outline-success flex-shrink-0"
+                                    type="button"
+                                    onClick={handleEdit}
+                            >
+
+                                <i className="bi-cart-fill me-1"></i>
+
+                               수정
 
                             </button>
 

@@ -26,6 +26,7 @@ import ClothesList from "../pages/cloth/ClothesList";
 import ClothesDetail from "../pages/cloth/ClothesDetail";
 import AddClothes from "../pages/cloth/AddClothes";
 import EditClothes from "../pages/cloth/EditClothes";
+import ProductUpdate from "../pages/product/ProductUpdate";
 
 function PathRoute () {
     const[user, setUser] = useState(null);
@@ -58,6 +59,7 @@ function PathRoute () {
                 <Route path="/products" element={<ProductList />} />
                 <Route path="/products/search" element={<ProductSearch />} />
                 <Route path="/products/:productId" element={<ProductDetail />} />
+                <Route path="/products/edit/:productId" element={<ProductUpdate />} />
 
                 {/* Cloth 경로 지정 */}
                 <Route path="/clothes" element={<ClothesList />} />
